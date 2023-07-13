@@ -5,6 +5,6 @@ import authController from '../controllers/authController';
 
 const router = Router();
 
-router.post('/products', async (req: Request, res: Response) => {});
+router.post('/products');
 
 export { router as authRouter };
