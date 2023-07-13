@@ -5,19 +5,14 @@ import { NotFoundError } from './errors';
 import { errorHandler } from './middlewares';
 import { authRouter } from './routes/authRoute';
 import morgan from 'morgan';
+import cors from 'cors';
 
 const app = express();
-app.set('trust proxy', true);
+app.use(cors({ credentials: true, origin: 'http://localhost:5000' }));
 
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  cookieSession({
-    signed: false,
-    secure: process.env.NODE_ENV !== 'test',
-  })
-);
 
 app.use('/api/auth', authRouter);
 

@@ -15,6 +15,7 @@ interface UserDoc extends mongoose.Document {
   username: string;
   email: string;
   password: string;
+  createdAt: string;
   updatedAt: string;
 }
 
@@ -34,6 +35,7 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
+    timestamps: true,
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;

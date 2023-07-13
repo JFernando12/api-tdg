@@ -36,15 +36,11 @@ const signup = async (req: Request, res: Response) => {
     process.env.JWT_KEY!
   );
 
-  //Store it on session object
-  req.session = {
-    jwt: userJwt,
-  };
-
-  res.status(201).json(user);
+  res.status(201).json({ username: user.username, token: userJwt });
 };
 
 const signin = async (req: Request, res: Response) => {
+  console.log('req.body', req.body);
   const { email, username, password } = req.body;
 
   const userRoot = {
@@ -65,7 +61,7 @@ const signin = async (req: Request, res: Response) => {
   if (!user) {
     if (email === userRoot.email || username === userRoot.username) {
       user = userRoot;
-      passwordMatch = await Password.compare(user.password, password);
+      passwordMatch = user.password === password;
     } else {
       throw new BadRequestError('User not found');
     }
@@ -86,14 +82,7 @@ const signin = async (req: Request, res: Response) => {
     process.env.JWT_KEY!
   );
 
-  req.session = { jwt: userJwt };
-
-  res.json(user);
-};
-
-const signout = (req: Request, res: Response) => {
-  req.session = null;
-  res.json({});
+  res.json({ username: user.username, token: userJwt });
 };
 
 const currentUser = (req: Request, res: Response) => {
@@ -103,6 +92,5 @@ const currentUser = (req: Request, res: Response) => {
 export default {
   signup,
   signin,
-  signout,
   currentUser,
 };

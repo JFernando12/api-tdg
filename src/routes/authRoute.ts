@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { validateRequest, currentUser } from '../middlewares';
+import { validateRequest, requireAuth } from '../middlewares';
 import authController from '../controllers/authController';
 
 const router = Router();
@@ -20,7 +20,7 @@ router.post(
 );
 
 router.post(
-  '/users/signin',
+  '/signin',
   [
     body('username', 'username or email is required')
       .if(body('email').not().isEmail())
@@ -31,8 +31,6 @@ router.post(
   authController.signin
 );
 
-router.post('/signout', authController.signout);
-
-router.get('/currentuser', currentUser, authController.currentUser);
+router.get('/currentuser', requireAuth, authController.currentUser);
 
 export { router as authRouter };
