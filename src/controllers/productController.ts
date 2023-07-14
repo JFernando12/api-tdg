@@ -1,11 +1,16 @@
+import { Request, Response } from 'express';
+import { NotFoundError } from '../errors';
+import { Product } from '../models';
+import response from '../network/response';
+
 const create = async (req: Request, res: Response) => {
-  const { name, description, price, category, image } = req.body;
+  const { name, description } = req.body;
+  const file = req.file as Express.MulterS3.File;
+  const image = file.location;
 
   const product = Product.build({
     name,
     description,
-    price,
-    category,
     image,
   });
 
@@ -17,7 +22,7 @@ const create = async (req: Request, res: Response) => {
 const getAll = async (req: Request, res: Response) => {
   const products = await Product.find({});
 
-  res.status(200).json(products);
+  response.success(req, res, 200, products);
 };
 
 const getById = async (req: Request, res: Response) => {
@@ -37,14 +42,11 @@ const update = async (req: Request, res: Response) => {
     throw new NotFoundError();
   }
 
-  const { name, description, price, category, image } = req.body;
+  const { name, description } = req.body;
 
   product.set({
     name,
     description,
-    price,
-    category,
-    image,
   });
 
   await product.save();
@@ -53,13 +55,15 @@ const update = async (req: Request, res: Response) => {
 };
 
 const remove = async (req: Request, res: Response) => {
-  const product = await Product.findById(req.params.id);
-
-  if (!product) {
-    throw new NotFoundError();
-  }
-
-  await product.remove();
+  const product = await Product.findOneAndDelete({ _id: req.params.id });
 
   res.status(200).json(product);
+};
+
+export default {
+  create,
+  getAll,
+  getById,
+  update,
+  remove,
 };

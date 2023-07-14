@@ -3,8 +3,6 @@ import mongoose from 'mongoose';
 interface ProductAttrs {
   name: string;
   description: string;
-  price: number;
-  category: string;
   image: string;
 }
 
@@ -15,8 +13,6 @@ interface ProductModel extends mongoose.Model<ProductDoc> {
 interface ProductDoc extends mongoose.Document {
   name: string;
   description: string;
-  price: number;
-  category: string;
   image: string;
   createdAt: string;
   updatedAt: string;
@@ -29,14 +25,6 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     description: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    category: {
       type: String,
       required: true,
     },

@@ -1,10 +1,38 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { body } from 'express-validator';
-import { validateRequest, requireAuth } from '../middlewares';
-import authController from '../controllers/authController';
+import { validateRequest, requireAuth, uploadImage } from '../middlewares';
+import productController from '../controllers/productController';
 
 const router = Router();
 
-router.post('/products');
+router.post(
+  '/',
+  requireAuth,
+  uploadImage(),
+  [
+    body('name').not().isEmpty().withMessage('Name is required'),
+    body('description').not().isEmpty().withMessage('Description is required'),
+  ],
+  validateRequest,
+  productController.create
+);
 
-export { router as authRouter };
+router.get('/', requireAuth, productController.getAll);
+
+router.get('/:id', requireAuth, productController.getById);
+
+router.put(
+  '/:id',
+  requireAuth,
+  uploadImage(),
+  [
+    body('name').not().isEmpty().withMessage('Name is required'),
+    body('description').not().isEmpty().withMessage('Description is required'),
+  ],
+  validateRequest,
+  productController.update
+);
+
+router.delete('/:id', requireAuth, productController.remove);
+
+export { router as productRouter };

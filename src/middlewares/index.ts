@@ -1,3 +1,4 @@
-export { validateRequest } from './validate-request';
-export { requireAuth } from './require-auth';
-export { errorHandler } from './error-handler';
+export * from './validate-request';
+export * from './require-auth';
+export * from './error-handler';
+export * from './upload-image';
