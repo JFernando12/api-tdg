@@ -40,7 +40,6 @@ const signup = async (req: Request, res: Response) => {
 };
 
 const signin = async (req: Request, res: Response) => {
-  console.log('req.body', req.body);
   const { email, username, password } = req.body;
 
   const userRoot = {

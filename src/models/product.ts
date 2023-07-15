@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 interface ProductAttrs {
   name: string;
+  price: number;
   description: string;
   image: string;
 }
@@ -12,6 +13,7 @@ interface ProductModel extends mongoose.Model<ProductDoc> {
 
 interface ProductDoc extends mongoose.Document {
   name: string;
+  price: number;
   description: string;
   image: string;
   createdAt: string;
@@ -22,6 +24,10 @@ const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
       required: true,
     },
     description: {

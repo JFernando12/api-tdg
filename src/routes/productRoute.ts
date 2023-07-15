@@ -11,6 +11,7 @@ router.post(
   uploadImage(),
   [
     body('name').not().isEmpty().withMessage('Name is required'),
+    body('price').not().isEmpty().withMessage('Price is required'),
     body('description').not().isEmpty().withMessage('Description is required'),
   ],
   validateRequest,
@@ -22,11 +23,19 @@ router.get('/', requireAuth, productController.getAll);
 router.get('/:id', requireAuth, productController.getById);
 
 router.put(
+  '/image/:id',
+  requireAuth,
+  uploadImage(),
+  productController.updateImage
+);
+
+router.put(
   '/:id',
   requireAuth,
   uploadImage(),
   [
     body('name').not().isEmpty().withMessage('Name is required'),
+    body('price').not().isEmpty().withMessage('Price is required'),
     body('description').not().isEmpty().withMessage('Description is required'),
   ],
   validateRequest,

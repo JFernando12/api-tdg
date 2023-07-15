@@ -4,12 +4,13 @@ import { Product } from '../models';
 import response from '../network/response';
 
 const create = async (req: Request, res: Response) => {
-  const { name, description } = req.body;
+  const { name, price, description } = req.body;
   const file = req.file as Express.MulterS3.File;
   const image = file.location;
 
   const product = Product.build({
     name,
+    price,
     description,
     image,
   });
@@ -32,7 +33,7 @@ const getById = async (req: Request, res: Response) => {
     throw new NotFoundError();
   }
 
-  res.status(200).json(product);
+  response.success(req, res, 200, product);
 };
 
 const update = async (req: Request, res: Response) => {
@@ -42,10 +43,11 @@ const update = async (req: Request, res: Response) => {
     throw new NotFoundError();
   }
 
-  const { name, description } = req.body;
+  const { name, price, description } = req.body;
 
   product.set({
     name,
+    price,
     description,
   });
 
@@ -60,10 +62,34 @@ const remove = async (req: Request, res: Response) => {
   res.status(200).json(product);
 };
 
+const updateImage = async (req: Request, res: Response) => {
+  console.log('updateImage');
+  const product = await Product.findById(req.params.id);
+  console.log('product', product);
+
+  if (!product) {
+    throw new NotFoundError();
+  }
+
+  const file = req.file as Express.MulterS3.File;
+  console.log('file', file);
+  console.log(req.body);
+  const image = file.location;
+
+  product.set({
+    image,
+  });
+
+  await product.save();
+
+  response.success(req, res, 200, product);
+};
+
 export default {
   create,
   getAll,
   getById,
   update,
   remove,
+  updateImage,
 };
