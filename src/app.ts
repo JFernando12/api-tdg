@@ -8,7 +8,7 @@ import cors from 'cors';
 import { productRouter } from './routes/productRoute';
 
 const app = express();
-app.use(cors({ credentials: true, origin: 'http://localhost:5000' }));
+app.use(cors({ credentials: true, origin: 'https://app.thedreamgiftmx.com' }));
 
 app.use(morgan('dev'));
 app.use(express.json());
