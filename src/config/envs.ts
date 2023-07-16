@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 
 config();
 
+export const ENV = process.env.ENV;
 export const PORT = process.env.PORT || 3000;
 export const MONGO_URI = process.env.MONGO_URI;
 export const JWT_KEY = process.env.JWT_KEY;

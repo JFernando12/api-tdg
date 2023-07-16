@@ -6,9 +6,18 @@ import { authRouter } from './routes/authRoute';
 import morgan from 'morgan';
 import cors from 'cors';
 import { productRouter } from './routes/productRoute';
+import { ENV } from './config/envs';
 
 const app = express();
-app.use(cors({ credentials: true, origin: 'https://app.thedreamgiftmx.com' }));
+app.use(
+  cors({
+    credentials: true,
+    origin:
+      ENV === 'development'
+        ? 'http://localhost:5000'
+        : 'https://app.thedreamgiftmx.com',
+  })
+);
 
 app.use(morgan('dev'));
 app.use(express.json());
