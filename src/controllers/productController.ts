@@ -63,17 +63,13 @@ const remove = async (req: Request, res: Response) => {
 };
 
 const updateImage = async (req: Request, res: Response) => {
-  console.log('updateImage');
   const product = await Product.findById(req.params.id);
-  console.log('product', product);
 
   if (!product) {
     throw new NotFoundError();
   }
 
   const file = req.file as Express.MulterS3.File;
-  console.log('file', file);
-  console.log(req.body);
   const image = file.location;
 
   product.set({
